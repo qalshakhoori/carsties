@@ -3,6 +3,8 @@ using AuctionService.Dtos;
 using AuctionService.Entities;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Contracts;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,11 +16,13 @@ public class AuctionsController : ControllerBase
 {
   private readonly AuctionDbContext _context;
   private readonly IMapper _mapper;
+  private readonly IPublishEndpoint _publishEndpoint;
 
-  public AuctionsController(AuctionDbContext context, IMapper mapper)
+  public AuctionsController(AuctionDbContext context, IMapper mapper, IPublishEndpoint publishEndpoint)
   {
     _context = context;
     _mapper = mapper;
+    _publishEndpoint = publishEndpoint;
   }
 
   [HttpGet]
@@ -55,10 +59,17 @@ public class AuctionsController : ControllerBase
 
     auction.Seller = "test";
 
+    // After adding Entity Framework Outbox
+    // This block will work as a transaction in entity framework while saving changes to database,
+    // Either all success or all fail
     _context.Auctions.Add(auction);
 
-    var success = await _context.SaveChangesAsync() > 0;
+    var newAuction = _mapper.Map<AuctionDto>(auction);
 
+    await _publishEndpoint.Publish(_mapper.Map<AuctionCreated>(newAuction));
+
+    var success = await _context.SaveChangesAsync() > 0;
+    // End of Block
     if (!success)
       return BadRequest("Could not save changes to the DB");
 
@@ -85,6 +96,10 @@ public class AuctionsController : ControllerBase
     auction.Item.Mileage = dto.Mileage ?? auction.Item.Mileage;
     auction.Item.Year = dto.Year ?? auction.Item.Year;
 
+    var auctionUpdated = _mapper.Map<AuctionUpdated>(auction);
+
+    await _publishEndpoint.Publish(auctionUpdated);
+
     var success = await _context.SaveChangesAsync() > 0;
 
     if (success)
@@ -104,6 +119,10 @@ public class AuctionsController : ControllerBase
     // TODO: check seller == username
 
     _context.Auctions.Remove(auction);
+
+    var auctionDeleted = new AuctionDeleted { Id = id.ToString() };
+
+    await _publishEndpoint.Publish(auctionDeleted);
 
     var success = await _context.SaveChangesAsync() > 0;
 

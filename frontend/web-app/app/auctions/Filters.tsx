@@ -21,7 +21,7 @@ const orderButtons = [
   {
     label: 'Recently added',
     icon: BsFillStopCircleFill,
-    value: 'make',
+    value: 'new',
   },
 ];
 

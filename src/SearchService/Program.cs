@@ -35,19 +35,19 @@ builder.Services.AddMassTransit(m =>
       e.ConfigureConsumer<AuctionCreatedConsumer>(context);
     });
 
-    config.ReceiveEndpoint("search-auction-updated", e =>
-    {
-      e.UseMessageRetry(r => r.Interval(5, 5));
+    // config.ReceiveEndpoint("search-auction-updated", e =>
+    // {
+    //   e.UseMessageRetry(r => r.Interval(5, 5));
 
-      e.ConfigureConsumer<AuctionUpdatedConsumer>(context);
-    });
+    //   e.ConfigureConsumer<AuctionUpdatedConsumer>(context);
+    // });
 
-    config.ReceiveEndpoint("search-auction-deleted", e =>
-    {
-      e.UseMessageRetry(r => r.Interval(5, 5));
+    // config.ReceiveEndpoint("search-auction-deleted", e =>
+    // {
+    //   e.UseMessageRetry(r => r.Interval(5, 5));
 
-      e.ConfigureConsumer<AuctionDeletedConsumer>(context);
-    });
+    //   e.ConfigureConsumer<AuctionDeletedConsumer>(context);
+    // });
 
     config.ConfigureEndpoints(context);
   });

@@ -1,10 +1,9 @@
-﻿using System.Net.Mime;
-using Contracts;
+﻿using Contracts;
 using MassTransit;
 using MongoDB.Entities;
 using SearchService.Models;
 
-namespace SearchService;
+namespace SearchService.Consumers;
 
 public class BidPlacedConsumer : IConsumer<BidPlaced>
 {

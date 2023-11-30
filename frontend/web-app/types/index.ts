@@ -22,3 +22,20 @@ export interface Auction {
   imageUrl: string;
   id: string;
 }
+
+export interface Bid {
+  id: string;
+  auctionId: string;
+  bidder: string;
+  bidTime: string;
+  amount: number;
+  bidStatus: string;
+}
+
+export interface AuctionFinished {
+  itemSold: boolean;
+  auctionId: string;
+  winner?: string;
+  seller: string;
+  amount?: number;
+}

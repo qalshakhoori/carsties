@@ -16,6 +16,7 @@ builder.Services.AddDbContext<AuctionDbContext>(
     opt.UseNpgsql(connectionString);
   }
 );
+builder.Services.AddScoped<IAuctionRepo, AuctionRepo>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddMassTransit(m =>
 {
@@ -73,3 +74,5 @@ catch (Exception e)
 }
 
 app.Run();
+
+public partial class Program { }

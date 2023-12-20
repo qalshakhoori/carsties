@@ -3,6 +3,7 @@ using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MongoDB.Driver;
 using MongoDB.Entities;
+using Polly;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,11 +17,17 @@ builder.Services.AddMassTransit(m =>
 
     m.UsingRabbitMq((context, config) =>
     {
+        config.UseMessageRetry(r =>
+        {
+            r.Handle<RabbitMqConnectionException>();
+            r.Interval(5, TimeSpan.FromSeconds(10));
+        });
+
         config.Host(builder.Configuration["RabbitMq:Host"], "/", host =>
-      {
-          host.Username(builder.Configuration.GetValue("RabbitMq:Username", "guest"));
-          host.Password(builder.Configuration.GetValue("RabbitMq:Password", "guest"));
-      });
+        {
+            host.Username(builder.Configuration.GetValue("RabbitMq:Username", "guest"));
+            host.Password(builder.Configuration.GetValue("RabbitMq:Password", "guest"));
+        });
         config.ConfigureEndpoints(context);
     });
 });
@@ -43,7 +50,12 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-await DB.InitAsync("BidDb", MongoClientSettings
+await Policy.Handle<TimeoutException>()
+.WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(5))
+.ExecuteAndCaptureAsync(async () =>
+{
+    await DB.InitAsync("BidDb", MongoClientSettings
     .FromConnectionString(builder.Configuration.GetConnectionString("BidDbConnection")));
+});
 
 app.Run();

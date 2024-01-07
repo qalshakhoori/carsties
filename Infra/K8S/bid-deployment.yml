@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bid-service
+spec:
+  selector:
+    matchLabels:
+      app: bid-service
+  template:
+    metadata:
+      labels:
+        app: bid-service
+    spec:
+      containers:
+      - name: bid-service
+        image: qassimov/bid-service
+        imagePullPolicy: Never
+        env:
+          - name: RabbitMq__Host
+            value: rabbit-clusterip
+          - name: RabbitMq__Username
+            value: rabbit
+          - name: RabbitMq__Password
+            value: rabbit
+          - name: ConnectionStrings__BidDbConnection
+            value: mongodb://root:mongopw@mongo-clusterip
+          - name: IdentityServiceUrl
+            value: https://id.carsties.com
+          - name: GrpcAuction
+            value: http://auction-clusterip:7777
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bid-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: bid-service
+  ports:
+  - port: 80
+    targetPort: 80

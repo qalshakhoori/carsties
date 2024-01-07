@@ -1,6 +1,9 @@
+using Duende.IdentityServer.Services;
 using IdentityService.Data;
 using IdentityService.Models;
 using IdentityService.Services;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -19,6 +22,10 @@ internal static class HostingExtensions
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
+
+        builder.Services.AddDataProtection()
+            .PersistKeysToFileSystem(new DirectoryInfo(builder.Configuration.GetValue<string>("AppSettings:KeyStore")))
+            .SetDefaultKeyLifetime(TimeSpan.FromDays(14));
 
         builder.Services
             .AddIdentityServer(options =>
@@ -41,6 +48,12 @@ internal static class HostingExtensions
             .AddAspNetIdentity<ApplicationUser>()
             .AddProfileService<CustomProfileService>();
 
+        builder.Services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders =
+                ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
+        });
+
         builder.Services.ConfigureApplicationCookie(options =>
         {
             options.Cookie.SameSite = SameSiteMode.Lax;
@@ -53,6 +66,20 @@ internal static class HostingExtensions
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
+        app.UseForwardedHeaders();
+
+        app.UseStaticFiles();
+        app.UseRouting();
+
+        if (app.Environment.IsProduction())
+            app.Use(async (context, next) =>
+            {
+                // context.Request.Scheme = "https";
+                var serverUrls = context.RequestServices.GetRequiredService<IServerUrls>();
+                serverUrls.Origin = serverUrls.Origin = "https://id.carsties.com";
+                await next();
+            });
+
         app.UseSerilogRequestLogging();
 
         if (app.Environment.IsDevelopment())
@@ -60,8 +87,6 @@ internal static class HostingExtensions
             app.UseDeveloperExceptionPage();
         }
 
-        app.UseStaticFiles();
-        app.UseRouting();
         app.UseIdentityServer();
         app.UseAuthorization();
 

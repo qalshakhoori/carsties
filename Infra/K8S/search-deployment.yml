@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-service
+spec:
+  selector:
+    matchLabels:
+      app: search-service
+  template:
+    metadata:
+      labels:
+        app: search-service
+    spec:
+      containers:
+      - name: search-service
+        image: qassimov/search-service
+        imagePullPolicy: Never
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        env:
+          - name: RabbitMq__Host
+            value: rabbit-clusterip
+          - name: RabbitMq__Username
+            value: rabbit
+          - name: RabbitMq__Password
+            value: rabbit
+          - name: ConnectionStrings__MongoDbConnection
+            value: mongodb://root:mongopw@mongo-clusterip
+          - name: AuctionServiceUrl
+            value: http://auction-clusterip
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: search-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: search-service
+  ports:
+  - port: 80
+    targetPort: 80

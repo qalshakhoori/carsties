@@ -20,7 +20,7 @@ public class CheckAuctionFinished : BackgroundService
   {
     _logger.LogInformation("Starting check for finished auctions");
 
-    stoppingToken.Register(() => _logger.LogInformation("===> Aiction check is stopping"));
+    stoppingToken.Register(() => _logger.LogInformation("===> Auction check is stopping"));
 
     while (!stoppingToken.IsCancellationRequested)
     {

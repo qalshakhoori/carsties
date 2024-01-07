@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notify-service
+spec:
+  selector:
+    matchLabels:
+      app: notify-service
+  template:
+    metadata:
+      labels:
+        app: notify-service
+    spec:
+      containers:
+      - name: notify-service
+        image: qassimov/notify-service
+        imagePullPolicy: Never
+        env:
+          - name: RabbitMq__Host
+            value: rabbit-clusterip
+          - name: RabbitMq__Username
+            value: rabbit
+          - name: RabbitMq__Password
+            value: rabbit
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notify-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: notify-service
+  ports:
+  - port: 80
+    targetPort: 80

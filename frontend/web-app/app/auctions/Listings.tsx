@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import AuctionCard from './AuctionCard';
-import { Auction, PagedResult } from '@/types';
 import AppPagination from '../components/AppPagination';
 import { getData } from '../actions/auctionActions';
 import Filters from './Filters';

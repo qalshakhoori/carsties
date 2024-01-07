@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-service
+spec:
+  selector:
+    matchLabels:
+      app: gateway-service
+  template:
+    metadata:
+      labels:
+        app: gateway-service
+    spec:
+      containers:
+      - name: gateway-service
+        image: qassimov/gateway-service
+        imagePullPolicy: Never
+        env:
+          - name: ClientApp
+            value: https://app.carsties.com
+          - name: IdentityServiceUrl
+            value: https://id.carsties.com
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: gateway-service
+  ports:
+  - port: 80
+    targetPort: 80

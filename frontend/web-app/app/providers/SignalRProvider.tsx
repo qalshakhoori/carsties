@@ -22,9 +22,8 @@ export default function SignalRProvider({ children, user }: Props) {
   const addBid = useBidStore((state) => state.addBid);
   const apiUrl =
     process.env.NODE_ENV === 'production'
-      ? 'https://api.carsties.com/notifications'
+      ? process.env.NEXT_PUBLIC_PROD_NOTIFY_URL
       : process.env.NEXT_PUBLIC_NOTIFY_URL;
-
   useEffect(() => {
     const newConnection = new HubConnectionBuilder()
       .withUrl(apiUrl!) // ! is to ignore ts error only

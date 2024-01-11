@@ -1,0 +1,1 @@
+gcloud container clusters delete "carsties-k8s"

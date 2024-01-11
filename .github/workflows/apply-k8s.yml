@@ -1,0 +1,27 @@
+name: deploy-auction
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['master']
+    paths:
+      - 'infr/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install glcoud and kubectl
+        env:
+          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+        run: |
+          curl https://sdk.cloud.google.com > install.sh
+          bash install.sh --disable-prompts
+          source $HOME/google-cloud-sdk/path.bash.inc
+          gcloud components update kubectl
+          echo "$GCLOUD_SERVICE_KEY" >> service-account.json
+          gcloud auth activate-service-account --key-file service-account.json
+          gcloud config set project k8s-deployment-382006
+          gcloud container clusters get-credentials cluster
+          kubectl apply -f infra/K8S

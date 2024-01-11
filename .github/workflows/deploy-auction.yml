@@ -40,5 +40,6 @@ jobs:
           echo "$GCLOUD_SERVICE_KEY" >> service-account.json
           gcloud auth activate-service-account --key-file service-account.json
           gcloud config set project k8s-deployment-382006
+          gcloud config set compute/region europe-west1
           gcloud container clusters get-credentials cluster
           kubectl rollout restart deployment ${{ env.DEPLOYMENT_NAME }}

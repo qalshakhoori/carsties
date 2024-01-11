@@ -1,4 +1,4 @@
-name: deploy-auction
+name: apply-k8s
 
 on:
   workflow_dispatch:

@@ -8,7 +8,7 @@ on:
       - 'src/GatewayService/**'
 
 env:
-  REGISTRY_IMAGE: qassimv/gateway-service
+  REGISTRY_IMAGE: qassimov/gateway-service
   DOCKERFILE: src/GatewayService/Dockerfile
   DEPLOYMENT_NAME: gateway-service
 

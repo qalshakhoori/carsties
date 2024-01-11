@@ -8,7 +8,7 @@ on:
       - 'src/NotificationService/**'
 
 env:
-  REGISTRY_IMAGE: qassimv/notify-service
+  REGISTRY_IMAGE: qassimov/notify-service
   DOCKERFILE: src/NotificationService/Dockerfile
   DEPLOYMENT_NAME: notify-service
 

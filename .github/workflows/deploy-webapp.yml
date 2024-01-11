@@ -8,7 +8,7 @@ on:
       - 'frontend/web-app/**'
 
 env:
-  REGISTRY_IMAGE: qassimv/web-app
+  REGISTRY_IMAGE: qassimov/web-app
   DOCKERFILE: frontend/web-app/Dockerfile
   DEPLOYMENT_NAME: webapp
 

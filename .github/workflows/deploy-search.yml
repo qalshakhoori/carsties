@@ -8,7 +8,7 @@ on:
       - 'src/SearchService/**'
 
 env:
-  REGISTRY_IMAGE: qassimv/search-service
+  REGISTRY_IMAGE: qassimov/search-service
   DOCKERFILE: src/SearchService/Dockerfile
   DEPLOYMENT_NAME: search-service
 

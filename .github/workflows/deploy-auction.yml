@@ -8,7 +8,7 @@ on:
       - 'src/AuctionService/**'
 
 env:
-  REGISTRY_IMAGE: qassimv/auction-service
+  REGISTRY_IMAGE: qassimov/auction-service
   DOCKERFILE: src/AuctionService/Dockerfile
   DEPLOYMENT_NAME: auction-service
 

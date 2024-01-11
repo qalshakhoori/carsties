@@ -8,7 +8,7 @@ on:
       - 'src/BiddingService/**'
 
 env:
-  REGISTRY_IMAGE: qassimv/bid-service
+  REGISTRY_IMAGE: qassimov/bid-service
   DOCKERFILE: src/BiddingService/Dockerfile
   DEPLOYMENT_NAME: bid-service
 

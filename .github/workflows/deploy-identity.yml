@@ -8,7 +8,7 @@ on:
       - 'src/IdentityService/**'
 
 env:
-  REGISTRY_IMAGE: qassimv/identity-service
+  REGISTRY_IMAGE: qassimov/identity-service
   DOCKERFILE: src/IdentityService/Dockerfile
   DEPLOYMENT_NAME: identity-service
 

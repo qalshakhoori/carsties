@@ -41,5 +41,6 @@ jobs:
           gcloud auth activate-service-account --key-file service-account.json
           gcloud config set project k8s-deployment-382006
           gcloud config set compute/region europe-west1
+          gcloud config set compute/zone europe-west1-b
           gcloud container clusters get-credentials carsties-k8s
           kubectl rollout restart deployment ${{ env.DEPLOYMENT_NAME }}

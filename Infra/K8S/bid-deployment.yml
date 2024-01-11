@@ -12,35 +12,35 @@ spec:
         app: bid-service
     spec:
       containers:
-      - name: bid-service
-        image: qassimov/bid-service
-        imagePullPolicy: Never
-        env:
-          - name: RabbitMq__Host
-            value: rabbit-clusterip
-          - name: RabbitMq__Username
-            valueFrom:
-              secretKeyRef:
-                name: bid-secret
-                key: rabbitUn
-          - name: RabbitMq__Password
-            valueFrom:
-              secretKeyRef:
-                name: bid-secret
-                key: rabbitPw
-          - name: ConnectionStrings__BidDbConnection
-            valueFrom:
-              secretKeyRef:
-                name: bid-secret
-                key: connString
-          - name: IdentityServiceUrl
-            value: https://id.carsties.com
-          - name: GrpcAuction
-            value: http://auction-clusterip:7777
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+        - name: bid-service
+          image: qassimov/bid-service
+          imagePullPolicy: Always
+          env:
+            - name: RabbitMq__Host
+              value: rabbit-clusterip
+            - name: RabbitMq__Username
+              valueFrom:
+                secretKeyRef:
+                  name: bid-secret
+                  key: rabbitUn
+            - name: RabbitMq__Password
+              valueFrom:
+                secretKeyRef:
+                  name: bid-secret
+                  key: rabbitPw
+            - name: ConnectionStrings__BidDbConnection
+              valueFrom:
+                secretKeyRef:
+                  name: bid-secret
+                  key: connString
+            - name: IdentityServiceUrl
+              value: https://id.carsties.com
+            - name: GrpcAuction
+              value: http://auction-clusterip:7777
+          resources:
+            limits:
+              memory: '128Mi'
+              cpu: '500m'
 ---
 apiVersion: v1
 kind: Service
@@ -51,5 +51,5 @@ spec:
   selector:
     app: bid-service
   ports:
-  - port: 80
-    targetPort: 80
+    - port: 80
+      targetPort: 80

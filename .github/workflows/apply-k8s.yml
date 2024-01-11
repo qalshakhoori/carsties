@@ -24,4 +24,4 @@ jobs:
           gcloud auth activate-service-account --key-file service-account.json
           gcloud config set project k8s-deployment-382006
           gcloud container clusters get-credentials cluster
-          kubectl apply -f infra/K8S
+          kubectl apply -f infra/K8S && kubectl apply -f infra/prod-k8s

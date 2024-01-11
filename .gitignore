@@ -478,3 +478,4 @@ $RECYCLE.BIN/
 
 # Custom
 devcerts
+Infra/prod-k8s/prod-secrets.yml

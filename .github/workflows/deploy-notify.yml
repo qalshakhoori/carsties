@@ -1,16 +1,16 @@
-name: deploy-identity
+name: deploy-notify
 
 on:
   workflow_dispatch:
   push:
     branches: ['master']
     paths:
-      - 'src/IdentityService/**'
+      - 'src/NotificationService/**'
 
 env:
-  REGISTRY_IMAGE: qassimv/identity-service
-  DOCKERFILE: src/IdentityService/Dockerfile
-  DEPLOYMENT_NAME: identity-service
+  REGISTRY_IMAGE: qassimv/notify-service
+  DOCKERFILE: src/NotificationService/Dockerfile
+  DEPLOYMENT_NAME: notify-service
 
 jobs:
   build:

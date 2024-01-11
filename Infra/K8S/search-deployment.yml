@@ -12,33 +12,33 @@ spec:
         app: search-service
     spec:
       containers:
-      - name: search-service
-        image: qassimov/search-service
-        imagePullPolicy: Never
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
-        env:
-          - name: RabbitMq__Host
-            value: rabbit-clusterip
-          - name: RabbitMq__Username
-            valueFrom:
-              secretKeyRef:
-                name: search-secret
-                key: rabbitUn
-          - name: RabbitMq__Password
-            valueFrom:
-              secretKeyRef:
-                name: search-secret
-                key: rabbitPw
-          - name: ConnectionStrings__MongoDbConnection
-            valueFrom:
-              secretKeyRef:
-                name: search-secret
-                key: connString
-          - name: AuctionServiceUrl
-            value: http://auction-clusterip
+        - name: search-service
+          image: qassimov/search-service
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: '128Mi'
+              cpu: '500m'
+          env:
+            - name: RabbitMq__Host
+              value: rabbit-clusterip
+            - name: RabbitMq__Username
+              valueFrom:
+                secretKeyRef:
+                  name: search-secret
+                  key: rabbitUn
+            - name: RabbitMq__Password
+              valueFrom:
+                secretKeyRef:
+                  name: search-secret
+                  key: rabbitPw
+            - name: ConnectionStrings__MongoDbConnection
+              valueFrom:
+                secretKeyRef:
+                  name: search-secret
+                  key: connString
+            - name: AuctionServiceUrl
+              value: http://auction-clusterip
 ---
 apiVersion: v1
 kind: Service
@@ -49,5 +49,5 @@ spec:
   selector:
     app: search-service
   ports:
-  - port: 80
-    targetPort: 80
+    - port: 80
+      targetPort: 80

@@ -1,16 +1,16 @@
-name: deploy-identity
+name: deploy-search
 
 on:
   workflow_dispatch:
   push:
     branches: ['master']
     paths:
-      - 'src/IdentityService/**'
+      - 'src/SearchService/**'
 
 env:
-  REGISTRY_IMAGE: qassimv/identity-service
-  DOCKERFILE: src/IdentityService/Dockerfile
-  DEPLOYMENT_NAME: identity-service
+  REGISTRY_IMAGE: qassimv/search-service
+  DOCKERFILE: src/SearchService/Dockerfile
+  DEPLOYMENT_NAME: search-service
 
 jobs:
   build:

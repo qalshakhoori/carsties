@@ -1,0 +1,45 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-service
+  labels:
+    name: ingress-service
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - app.carsties.com
+        - api.carsties.com
+        - id.carsties.com
+      secretName: carsties-app-tls
+  rules:
+    - host: app.carsties.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: '/'
+            backend:
+              service:
+                name: webapp-lb
+                port:
+                  number: 3000
+    - host: api.carsties.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: '/'
+            backend:
+              service:
+                name: gateway-clusterip
+                port:
+                  number: 80
+    - host: id.carsties.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: '/'
+            backend:
+              service:
+                name: identity-lb
+                port:
+                  number: 80

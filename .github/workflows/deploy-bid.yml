@@ -1,16 +1,16 @@
-name: deploy-identity
+name: deploy-bid
 
 on:
   workflow_dispatch:
   push:
     branches: ['master']
     paths:
-      - 'src/IdentityService/**'
+      - 'src/BiddingService/**'
 
 env:
-  REGISTRY_IMAGE: qassimv/identity-service
-  DOCKERFILE: src/IdentityService/Dockerfile
-  DEPLOYMENT_NAME: identity-service
+  REGISTRY_IMAGE: qassimv/bid-service
+  DOCKERFILE: src/BiddingService/Dockerfile
+  DEPLOYMENT_NAME: bid-service
 
 jobs:
   build:

@@ -1,16 +1,16 @@
-name: deploy-identity
+name: deploy-webapp
 
 on:
   workflow_dispatch:
   push:
     branches: ['master']
     paths:
-      - 'src/IdentityService/**'
+      - 'frontend/web-app/**'
 
 env:
-  REGISTRY_IMAGE: qassimv/identity-service
-  DOCKERFILE: src/IdentityService/Dockerfile
-  DEPLOYMENT_NAME: identity-service
+  REGISTRY_IMAGE: qassimv/web-app
+  DOCKERFILE: frontend/web-app/Dockerfile
+  DEPLOYMENT_NAME: webapp
 
 jobs:
   build:

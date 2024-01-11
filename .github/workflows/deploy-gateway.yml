@@ -1,16 +1,16 @@
-name: deploy-identity
+name: deploy-gateway
 
 on:
   workflow_dispatch:
   push:
     branches: ['master']
     paths:
-      - 'src/IdentityService/**'
+      - 'src/GatewayService/**'
 
 env:
-  REGISTRY_IMAGE: qassimv/identity-service
-  DOCKERFILE: src/IdentityService/Dockerfile
-  DEPLOYMENT_NAME: identity-service
+  REGISTRY_IMAGE: qassimv/gateway-service
+  DOCKERFILE: src/GatewayService/Dockerfile
+  DEPLOYMENT_NAME: gateway-service
 
 jobs:
   build:

@@ -38,7 +38,7 @@ spec:
                   name: auction-secret
                   key: connString
             - name: IdentityServiceUrl
-              value: https://id.carsties.com
+              value: http://id.carsties.com
             - name: Kestrel__Endpoints__Grpc__Protocols
               value: Http2
             - name: Kestrel__Endpoints__Grpc__Url

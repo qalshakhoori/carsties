@@ -17,9 +17,9 @@ spec:
           imagePullPolicy: Always
           env:
             - name: ClientApp
-              value: https://app.carsties.com
+              value: http://app.carsties.com
             - name: IdentityServiceUrl
-              value: https://id.carsties.com
+              value: http://id.carsties.com
           resources:
             limits:
               memory: '128Mi'

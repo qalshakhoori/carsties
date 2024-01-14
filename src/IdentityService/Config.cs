@@ -17,21 +17,14 @@ public static class Config
             new ApiScope("auctionApp", "Auction app full access"),
         };
 
-    public static IEnumerable<Client> Clients(IConfiguration config) =>
-        new Client[]
-        {
-            new Client{
-                ClientId = "postman",
-                ClientName = "Postman",
-                AllowedScopes = {"openid", "profile", "auctionApp"},
-                RedirectUris = { "https://www.getpostman.com/oauth2/callback" },
-                ClientSecrets = new[] {new Secret("NotASecret".Sha256())},
-                AllowedGrantTypes = new[] { GrantType.ResourceOwnerPassword }
-            },
+    public static IEnumerable<Client> Clients(IConfiguration config, bool addPostman = false)
+    {
+        var clients = new Client[]
+          {
             new Client {
                 ClientId = "nextApp",
                 ClientName = "nextApp",
-                ClientSecrets = {new Secret("secret".Sha256())},
+                ClientSecrets = {new Secret(config["ClientSecret"].Sha256())},
                 AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                 RequirePkce = false,
                 RedirectUris = {config["ClientApp"] + "/api/auth/callback/id-server"},
@@ -40,5 +33,20 @@ public static class Config
                 AccessTokenLifetime = 3600 * 24 * 30,
                 AlwaysIncludeUserClaimsInIdToken = true
             }
-        };
+          }.ToList();
+
+        if (addPostman)
+            clients.Add(new Client
+            {
+                ClientId = "postman",
+                ClientName = "Postman",
+                AllowedScopes = { "openid", "profile", "auctionApp" },
+                RedirectUris = { "https://www.getpostman.com/oauth2/callback" },
+                ClientSecrets = new[] { new Secret("NotASecret".Sha256()) },
+                AllowedGrantTypes = new[] { GrantType.ResourceOwnerPassword }
+            });
+
+        return clients;
+    }
+
 }

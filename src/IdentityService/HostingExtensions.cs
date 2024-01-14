@@ -44,7 +44,7 @@ internal static class HostingExtensions
             })
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
-            .AddInMemoryClients(Config.Clients(builder.Configuration))
+            .AddInMemoryClients(Config.Clients(builder.Configuration, builder.Environment.IsDevelopment()))
             .AddAspNetIdentity<ApplicationUser>()
             .AddProfileService<CustomProfileService>();
 
@@ -76,7 +76,7 @@ internal static class HostingExtensions
             {
                 // context.Request.Scheme = "https";
                 var serverUrls = context.RequestServices.GetRequiredService<IServerUrls>();
-                serverUrls.Origin = serverUrls.Origin = "https://id.carsties.com";
+                serverUrls.Origin = serverUrls.Origin = "http://id.carsties.com";
                 await next();
             });
 

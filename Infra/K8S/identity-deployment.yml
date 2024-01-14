@@ -22,7 +22,12 @@ spec:
                   name: identity-secret
                   key: connString
             - name: ClientApp
-              value: https://app.carsties.com
+              value: http://app.carsties.com
+            - name: ClientSecret
+              valueFrom:
+                secretKeyRef:
+                  name: identity-secret
+                  key: clientSecret
           resources:
             limits:
               memory: '128Mi'

@@ -1,7 +1,7 @@
 name: apply-k8s
 
 on:
-  # workflow_dispatch:
+  workflow_dispatch:
   push:
     branches: ['master']
     paths:
@@ -27,4 +27,3 @@ jobs:
           gcloud config set compute/zone europe-west1-b
           gcloud container clusters get-credentials carsties-k8s
           kubectl apply -f infra/K8S && kubectl apply -f infra/prod-k8s
-          echo 'updated cluster'

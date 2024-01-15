@@ -5,7 +5,7 @@ on:
   push:
     branches: ['master']
     paths:
-      - 'Infr/**'
+      - 'Infra/**'
 
 jobs:
   build:

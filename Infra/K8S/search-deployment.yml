@@ -18,7 +18,7 @@ spec:
           resources:
             limits:
               memory: '128Mi'
-              cpu: '500m'
+              cpu: '100m'
           env:
             - name: RabbitMq__Host
               value: rabbit-clusterip
